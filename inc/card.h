@@ -4,9 +4,10 @@
 class card
 {
   public:
-    int value() { return static_cast<int>(value); }
-
-  private:
+    int value() const { return static_cast<int>(value); }
+    
+private:
+    void setCard(int, int);
     enum suit
     {
         diamond,
