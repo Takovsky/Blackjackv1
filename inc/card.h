@@ -4,10 +4,9 @@
 class card
 {
   public:
-    int value() const { return static_cast<int>(value); }
-    
-private:
-    void setCard(int, int);
+    int value() const { return static_cast<int>(_value); }
+
+  protected:
     enum suit
     {
         diamond,
@@ -31,8 +30,11 @@ private:
         king = 10,
         ace
     };
-    suit symbol;
-    figure value;
+    void set(int, int);
+
+  private:
+    suit _symbol;
+    figure _value;
 };
 
 #endif

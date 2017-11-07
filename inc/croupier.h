@@ -8,16 +8,16 @@ class croupier
   public:
     bool getInstance()
     {
-        if (crp == NULL)
+        if (_crp == NULL)
         {
-            crp = new croupier;
-            return true
+            _crp = new croupier;
+            return true;
         }
         else
-            return false
+            return false;
     }
   private:
-    croupier *crp;
+    croupier *_crp;
     croupier() {}
     ~croupier() {}
 };
