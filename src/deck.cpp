@@ -13,11 +13,10 @@ void Deck::set()
     suit s = diamond;
     figure f = two;
     for (int i = 0; i < DECK_SIZE; i++)
-        push_back(make_shared<Card>());
+        push_back(std::unique_ptr<Card>(new Card));
     for (auto pd = begin(); pd != end(); pd++)
     {
         (*pd)->set(s++, f++);
-        // std::cout << (*pd)->value() << "     " << (*pd)->symbol() << std::endl;
     }
 }
 

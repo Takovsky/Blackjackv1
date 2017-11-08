@@ -1,10 +1,19 @@
 #include <croupier.h>
 #include <stdio.h> //rand
+#include <player.h>
+#include <memory>
+#include <iostream>
 
-void Croupier::doShuffle(Deck &d)
+void Croupier::doShuffle()
 {
-    for (int i = 0; i < d.size(); i++)
+    for (int i = 0; i < _deck::size(); i++)
     {
-        d.swap(i, rand() % d.size());
+        _deck::swap(i, rand() % _deck::size());
     }
+}
+
+void Croupier::doGiveCard(Player &p)
+{
+    p.pushCard(std::move(_deck::back()));
+    _deck::pop_back();
 }
