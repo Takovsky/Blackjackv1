@@ -1,25 +1,30 @@
 #ifndef _CROUPIER_H
 #define _CROUPIER_H
 
-#include <stdio.h>
+#include <memory>
+#include <deck.h>
+#include <card.h>
 
-class croupier
+class Croupier
 {
   public:
-    bool getInstance()
+    ~Croupier() {}
+    static bool getInstance()
     {
-        if (_crp == NULL)
+        if (!_crp)
         {
-            _crp = new croupier;
+            _crp = std::unique_ptr<Croupier>(new Croupier);
             return true;
         }
         else
             return false;
     }
+    static void shuffle(Deck d) { _crp->doShuffle(d); }
+
   private:
-    croupier *_crp;
-    croupier() {}
-    ~croupier() {}
+    static std::unique_ptr<Croupier> _crp;
+    Croupier() { _crp.release(); }
+    void doShuffle(Deck &);
 };
 
 #endif
