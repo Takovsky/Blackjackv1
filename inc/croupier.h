@@ -5,34 +5,42 @@
 #include <deck.h>
 #include <card.h>
 #include <player.h>
+#include <person.h>
 
-class Croupier : private Deck
+class Croupier : private Deck, public Person
 {
-  private:
-    typedef Deck _deck;
+private:
+  typedef Deck _deck;
 
-  public:
-    ~Croupier() {}
-    static bool getInstance()
+public:
+  ~Croupier() { _crp.release(); }
+  static bool getInstance()
+  {
+    if (!_crp)
     {
-        if (!_crp)
-        {
-            _crp = std::unique_ptr<Croupier>(new Croupier);
-            return true;
-        }
-        else
-            return false;
+      _crp = std::unique_ptr<Croupier>(new Croupier);
+      return true;
     }
-    static void shuffle() { _crp->doShuffle(); }
-    static void giveCard(Player &p) { _crp->doGiveCard(p); }
-    static void setDeck() { _crp->doSetDeck(); }
+    else
+      return false;
+  }
+  static void shuffle() { _crp->doShuffle(); }
+  static void giveCard(Person &p) { _crp->doGiveCard(p); }
+  static void setDeck() { _crp->doSetDeck(); }
+  static void clearTable()
+  {
+    _crp->_deck::clear();
+    _crp->clearCards();
+  }
 
-  private:
-    void doSetDeck() { _deck::set(); }
-    void doGiveCard(Player &);
-    static std::unique_ptr<Croupier> _crp;
-    Croupier() { _crp.release(); }
-    void doShuffle();
+private:
+  std::string _name;
+  int _id;
+  void doSetDeck() { _deck::set(); }
+  void doGiveCard(Person &);
+  static std::unique_ptr<Croupier> _crp;
+  Croupier() : Person(-1, "Croupier") {}
+  void doShuffle();
 };
 
 #endif

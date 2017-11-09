@@ -12,7 +12,7 @@ void Croupier::doShuffle()
     }
 }
 
-void Croupier::doGiveCard(Player &p)
+void Croupier::doGiveCard(Person &p)
 {
     p.pushCard(std::move(_deck::back()));
     _deck::pop_back();
