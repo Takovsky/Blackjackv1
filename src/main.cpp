@@ -20,4 +20,13 @@ int main()
     Table::getInstance();
     Table::initialize();
     list<shared_ptr<Player>> pllist;
+    pllist.push_back(make_shared<Player>("adamek"));
+    pllist.push_back(make_shared<Player>("ziutek"));
+    pllist.push_back(make_shared<Player>("frajerek"));
+    for (auto &d : pllist)
+        Table::addPlayer(d);
+    Table::giveFirstCards();
+    for (auto &d : pllist)
+        std::cout << d->id() << ". " << d->name() << "\t" << d->sum() << std::endl;
+    Table::showPlayers();
 }

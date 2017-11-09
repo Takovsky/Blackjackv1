@@ -26,6 +26,7 @@ public:
   }
   static void shuffle() { _crp->doShuffle(); }
   static void giveCard(Person &p) { _crp->doGiveCard(p); }
+  static void takeCard() { _crp->doGiveCard(*_crp); }
   static void setDeck() { _crp->doSetDeck(); }
   static void clearTable()
   {

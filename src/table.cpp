@@ -1,10 +1,11 @@
 #include <table.h>
 #include <player.h>
 #include <croupier.h>
+#include <iostream>
 
-void Table::doAddPlayer(std::string name)
+void Table::doAddPlayer(std::shared_ptr<Player> pl)
 {
-    _players::push_back(std::shared_ptr<Player>(new Player(name)));
+    _players::push_back(pl);
 }
 
 bool Table::doDeletePlayer(int id)
@@ -33,7 +34,20 @@ void Table::doInitialize()
 
 void Table::doNewRound()
 {
-    for (auto &pl : _players())
-        pl->clearCards();
+    for (auto pd = _players::begin(); pd != _players::end(); pd++)
+        (*pd)->clearCards();
     Croupier::clearTable();
+}
+
+void Table::doGiveFirstCards()
+{
+    Croupier::takeCard();
+    for (auto pd = _players::begin(); pd != _players::end(); pd++)
+        Croupier::giveCard(**pd);
+}
+
+void Table::doShowPlayers()
+{
+    for (auto pd = _players::begin(); pd != _players::end(); pd++)
+        std::cout << (*pd)->id() << ". " << (*pd)->name() << "\t" << (*pd)->sum() << std::endl;
 }

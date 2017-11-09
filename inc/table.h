@@ -23,18 +23,22 @@ class Table : private std::list<std::shared_ptr<Player>>
         else
             return false;
     }
-    static void addPlayer(std::string name) { _table->doAddPlayer(name); }
+    static void addPlayer(std::shared_ptr<Player> pl) { _table->doAddPlayer(pl); }
     static bool deletePlayer(int id) { _table->doDeletePlayer(id); }
     static void initialize() { _table->doInitialize(); }
     static void newRound() { _table->doNewRound(); }
+    static void giveFirstCards() { _table->doGiveFirstCards(); }
+    static void showPlayers() { _table->doShowPlayers(); }
 
   private:
     Table() {}
     static std::unique_ptr<Table> _table;
-    void doAddPlayer(std::string);
+    void doAddPlayer(std::shared_ptr<Player>);
     bool doDeletePlayer(int);
     void doInitialize();
     void doNewRound();
+    void doGiveFirstCards();
+    void doShowPlayers();
 };
 
 #endif
