@@ -2,9 +2,7 @@
 #include <memory>  // smart ptr
 #include <stdio.h> // rand
 #include <time.h>  // time
-#include <card.h>
 #include <croupier.h>
-#include <deck.h>
 #include <player.h>
 #include <table.h>
 
@@ -18,15 +16,71 @@ int main()
 {
     srand(time(NULL));
     Table::getInstance();
-    Table::initialize();
-    list<shared_ptr<Player>> pllist;
-    pllist.push_back(make_shared<Player>("adamek"));
-    pllist.push_back(make_shared<Player>("ziutek"));
-    pllist.push_back(make_shared<Player>("frajerek"));
-    for (auto &d : pllist)
-        Table::addPlayer(d);
-    Table::giveFirstCards();
-    for (auto &d : pllist)
-        std::cout << d->id() << ". " << d->name() << "\t" << d->sum() << std::endl;
-    Table::showPlayers();
+    Croupier::getInstance();
+    char d = 'o';
+    string name;
+    int players_nr;
+    list<shared_ptr<Player>> players;
+    cout << "Welcome to Blackack." << endl
+         << "May the fortune be with you!" << endl
+         << endl
+         << "How many players are there?" << std::endl;
+    cin >> players_nr;
+    for (int i = 0; i < players_nr; i++)
+    {
+        cout << "Set " << i + 1 << ". player name: ";
+        cin >> name;
+        players.push_back(make_shared<Player>(name));
+    }
+    for (auto pd : players)
+        Table::addPlayer(pd);
+    while (d != 'q')
+    {
+        Table::initialize();
+        Table::resetActive();
+        Table::giveFirstCards();
+        Table::showPlayers();
+        for (int i = 0; i < Table::size(); i++)
+        {
+            d = 's';
+            do
+            {
+                if (!Table::checkCards())
+                {
+                    std::cout << "Sorry mate, unlucky one :(" << std::endl;
+                    break;
+                }
+                else if (Table::checkBlackjack())
+                {
+                    std::cout << std::endl
+                              << "Blackjack is here! " << (*Table::active())->name() << " has scored 21!" << std::endl;
+                    break;
+                }
+                cout << "It's " << (*Table::active())->name() << "'s turn" << std::endl
+                     << "What you wish to do?(s - stand | h - hit)" << std::endl;
+                cin >> d;
+                if (d == 'h')
+                {
+                    Table::giveCard();
+                    if (!Table::checkCards())
+                    {
+                        std::cout << "Sorry mate, unlucky one :(" << std::endl;
+                        break;
+                    }
+                    else if (Table::checkBlackjack())
+                    {
+                        std::cout << std::endl
+                                  << "Blackjack is here! " << (*Table::active())->name() << " has scored 21!" << std::endl;
+                        break;
+                    }
+                    Table::showPlayers();
+                }
+            } while (d != 's');
+            Table::showPlayers();
+            Table::nextPlayer();
+        }
+        Table::endRound();
+        cout << "What u wish to do now?(n - new game | q - quit)" << endl;
+        cin >> d;
+    }
 }
