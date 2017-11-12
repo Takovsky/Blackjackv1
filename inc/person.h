@@ -25,15 +25,17 @@ public:
   {
     _cards::clear();
     _sum = 0;
+    _aceplace = 0;
   }
   std::vector<std::unique_ptr<Card>>::iterator cBegin() { return _cards::begin(); } // iterator poczatku kart
   std::vector<std::unique_ptr<Card>>::iterator cEnd() { return _cards::end(); }     // iterator konca kart
 
 protected:
-  Person(int id, std::string name) : _id(id), _name(name), _sum(0) {} // konstruktor
-  int _id;                                                            // id osoby
-  std::string _name;                                                  // nazwa osoby
-  unsigned int _sum;                                                  // suma punktow
+  int _aceplace;
+  Person(int id, std::string name) : _id(id), _name(name), _sum(0), _aceplace(0) {} // konstruktor
+  int _id;                                                                          // id osoby
+  std::string _name;                                                                // nazwa osoby
+  unsigned int _sum;                                                                // suma punktow
 };
 
 #endif

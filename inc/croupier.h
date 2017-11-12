@@ -32,7 +32,8 @@ public:
   static void takeCard() { _crp->doGiveCard(*_crp); }                                            // wydanie karty samemu sobie
   static void setDeck() { _crp->doSetDeck(); }                                                   // ustawia talie
   static unsigned int sum() { return _crp->_sum; }                                               // zwraca sume kart krupiera
-  static void clearTable()                                                                       // czysci stol(usuwa swoje karty i talie)
+  static int firstCard() { return (*_crp->ccBegin())->value(); }
+  static void clearTable() // czysci stol(usuwa swoje karty i talie)
   {
     _crp->_deck::clear();
     _crp->clearCards();

@@ -45,17 +45,6 @@ int main()
             d = 's';
             do
             {
-                if (!Table::checkCards())
-                {
-                    std::cout << "Sorry mate, unlucky one :(" << std::endl;
-                    break;
-                }
-                else if (Table::checkBlackjack())
-                {
-                    std::cout << std::endl
-                              << "Blackjack is here! " << (*Table::active())->name() << " has scored 21!" << std::endl;
-                    break;
-                }
                 cout << "It's " << (*Table::active())->name() << "'s turn" << std::endl
                      << "What you wish to do?(s - stand | h - hit)" << std::endl;
                 cin >> d;
@@ -77,6 +66,8 @@ int main()
                 }
             } while (d != 's');
             Table::showPlayers();
+            if (i == Table::size() - 1)
+                Table::showFullPlayers();
             Table::nextPlayer();
         }
         Table::endRound();

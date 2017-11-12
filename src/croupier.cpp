@@ -7,9 +7,12 @@
 
 void Croupier::doShuffle() // tassowanie kart
 {
-    for (int i = 0; i < _deck::size(); i++)
+    for (int j = 4; j > 0; j--)
     {
-        _deck::swap(i, rand() % _deck::size());
+        for (int i = 0; i < _deck::size(); i++)
+        {
+            _deck::swap(i, rand() % _deck::size());
+        }
     }
 }
 
@@ -23,6 +26,7 @@ bool Croupier::doPlay(std::list<std::shared_ptr<Player>> players) // gra krupier
 {
     bool shouldtake = false;
     bool playerslost = true;
+    int i = 0;
     for (auto pd = players.begin(); pd != players.end(); pd++)
     {
         if (Croupier::sum() < (*pd)->sum())
@@ -35,21 +39,27 @@ bool Croupier::doPlay(std::list<std::shared_ptr<Player>> players) // gra krupier
         Croupier::takeCard();
         return Croupier::play(players);
     }
+    else if (playerslost && Croupier::sum() <= 21)
+        return true;
     else if (Croupier::sum() >= 17 && Croupier::sum() <= 21) // jesli ma 17-21
         return true;
     else if (Croupier::sum() > 21) // jesli ma powyzej
     {
-        for (auto pd = Croupier::ccBegin(); pd != Croupier::ccEnd(); pd++)
+        for (auto pd = Croupier::ccBegin() + _aceplace; pd != Croupier::ccEnd(); pd++)
         {
+            i++;
             if ((*pd)->value() == ace) // szukamy asa
             {
+                _crp->_aceplace = i;
                 _crp->aceToOne();
+                std::cout << std::endl
+                          << "Ace's value is now 1" << std::endl;
                 break;
             }
         }
         if (Croupier::sum() > 21)
             return false; // i zwracamy co wyszlo
         else
-            Croupier::play(players);
+            return Croupier::play(players);
     }
 }

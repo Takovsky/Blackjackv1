@@ -41,6 +41,16 @@ void Table::doShowPlayers() // wyswietla graczy
 {
     std::cout << std::endl
               << "0. "
+              << "Croupier's score = " << Croupier::sum() - Croupier::firstCard() << std::endl;
+    for (auto pd = _players::begin(); pd != _players::end(); pd++)
+        std::cout << (*pd)->id() + 1 << ". " << (*pd)->name() << "'s score = " << (*pd)->sum() << std::endl;
+    std::cout << std::endl;
+}
+
+void Table::doShowFullPlayers() // wyswietla graczy
+{
+    std::cout << std::endl
+              << "0. "
               << "Croupier's score = " << Croupier::sum() << std::endl;
     for (auto pd = _players::begin(); pd != _players::end(); pd++)
         std::cout << (*pd)->id() + 1 << ". " << (*pd)->name() << "'s score = " << (*pd)->sum() << std::endl;
@@ -87,7 +97,7 @@ void Table::doEndRound() // konczy runde
         if (smax == (*pd)->sum())   // jesli max punktow sie powtarza, to wszystkich graczy
             winners.push_back(*pd); // z tyloma punktami wpisujemy na liste zwyceizcow
     }
-    _table->doShowPlayers();      // wyswietlamy graczy
+    _table->doShowFullPlayers();      // wyswietlamy graczy
     if (winners.empty() && crpin) // jesli wygral krupier
     {
         std::cout << "Croupier won with score " << Croupier::sum() << std::endl;
